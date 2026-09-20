@@ -1,0 +1,33 @@
+{
+  "name": "cli-sdd",
+  "version": "1.0.0",
+  "description": "task cli app build with nodejs and typescript using SSD metodology",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "nodejs",
+    "typescript",
+    "ssd"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:sergio-pomarico/cli-sdd.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sergio-pomarico/cli-sdd/issues"
+  },
+  "homepage": "https://github.com/sergio-pomarico/cli-sdd#readme",
+  "author": "Sergio Pomárico <sergiodavid21@gmail.com>",
+  "license": "MIT",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.1.1",
+      "onFail": "download"
+    }
+  },
+  "type": "module"
+}
