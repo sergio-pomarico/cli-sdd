@@ -14,7 +14,7 @@ and output functions in `src/utils/`.
 
 ## Technical Context
 
-**Language/Version**: TypeScript (current stable) on Node.js 24 LTS; package engine floor
+**Language/Version**: TypeScript 7.0.2 on Node.js 24 LTS; package engine floor
 `>=22.13` for current Commander and Inquirer compatibility
 
 **Primary Dependencies**: Commander.js 15, `@inquirer/prompts` 8, Prisma ORM 7 with the Prisma
@@ -25,17 +25,17 @@ Prisma package versions MUST be pinned together
 packaged and applied before opening the client
 
 **Testing**: Vitest unit tests for validation and state transitions; command tests with injected
-dependencies; subprocess smoke tests against the compiled executable and a temporary `HOME`
+dependencies; subprocess smoke tests against the compiled executable and a temporary `HOME`;
+GitHub Actions jobs on `ubuntu-24.04` and `macos-15`
 
-**Target Platform**: macOS, Linux, and Windows environments supported by Node.js LTS and the
-SQLite adapter; globally installed with pnpm and invoked as `task`
+**Target Platform**: Linux and macOS environments supported by Node.js LTS and the SQLite
+adapter; globally installed with pnpm and invoked as `task`; Windows is not guaranteed initially
 
 **Project Type**: Single TypeScript CLI package using ESM
 
 **Performance Goals**: Filtered and unfiltered lists of up to 10,000 tasks begin displaying rows
-within 2 seconds on a typical personal computer; remaining rows may continue rendering;
-ordinary mutating commands complete within 2 seconds after migrations are current, excluding
-time spent waiting for interactive input
+within 2 seconds on a GitHub-hosted `ubuntu-24.04` runner using Node.js 24; remaining rows may
+continue rendering
 
 **Constraints**: Offline operation; one local user; no stack traces; exit code 0 for success or
 cancelled deletion and 1 for errors; database path independent of the working directory; no
@@ -91,6 +91,10 @@ specs/001-manage-personal-tasks/
 ### Source Code (repository root)
 
 ```text
+.github/
+└── workflows/
+    └── ci.yml
+
 prisma/
 ├── schema.prisma
 └── migrations/
@@ -99,6 +103,7 @@ src/
 ├── commands/
 │   ├── add.ts
 │   ├── delete.ts
+│   ├── index.ts
 │   ├── list.ts
 │   ├── status.ts
 │   └── update.ts
@@ -118,7 +123,10 @@ tests/
 ├── unit/
 ├── commands/
 └── smoke/
-    └── list-performance.test.ts
+    ├── cli-mvp.test.ts
+    ├── cli.test.ts
+    ├── list-performance.test.ts
+    └── package.test.ts
 
 package.json
 prisma.config.ts

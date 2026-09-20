@@ -35,7 +35,7 @@ an independently valuable increment after the shared foundation is complete.
 **Purpose**: Establish the TypeScript ESM package, required dependencies, build, test, and Prisma
 configuration without implementing user-story behavior.
 
-- [ ] T001 Configure Node `>=22.13`, the `task` bin, package files, runtime/dev dependencies, pnpm scripts, and aligned Prisma versions in `package.json` and `pnpm-lock.yaml`
+- [ ] T001 Configure Node `>=22.13`, exact TypeScript `7.0.2`, the `task` bin, package files, runtime/dev dependencies, pnpm scripts, and aligned Prisma versions in `package.json` and `pnpm-lock.yaml`
 - [ ] T002 [P] Configure strict NodeNext development and production compilation in `tsconfig.json` and `tsconfig.build.json`
 - [ ] T003 [P] Configure Vitest unit, command, and smoke test discovery in `vitest.config.ts`
 - [ ] T004 [P] Configure Prisma 7 ESM generation, SQLite datasource, migration paths, and generated output under `src/db/generated/prisma/` in `prisma.config.ts` and `prisma/schema.prisma`
@@ -52,7 +52,7 @@ user story.
 
 **CRITICAL**: No user story implementation begins until this phase is complete.
 
-- [ ] T005 Add the Task table, defaults, and ordering/filter indexes in `prisma/migrations/0001_init/migration.sql`
+- [ ] T005 Run `pnpm prisma migrate dev --name init`, then review and retain the generated Task table, defaults, and ordering/filter indexes in `prisma/migrations/`
 - [ ] T006 Generate and verify the publishable Prisma ESM client in `src/db/generated/prisma/`
 - [ ] T007 Implement home-directory resolution, recursive `~/.task-cli` creation, packaged `prisma migrate deploy`, and injectable test paths in `src/db/init.ts`
 - [ ] T008 Implement the `PrismaBetterSqlite3` client factory and deterministic disconnect lifecycle in `src/db/client.ts`
@@ -80,17 +80,19 @@ ordering. Invalid titles and priorities create no row.
 - [ ] T013 [P] [US1] Add create/list database tests for defaults, monotonic IDs, optional descriptions, ordering ties, and invalid no-write behavior in `tests/unit/tasks-create-list.test.ts`
 - [ ] T014 [P] [US1] Add `task add` contract tests for successful and invalid inputs, stdout/stderr, and exit codes in `tests/commands/add.test.ts`
 - [ ] T015 [P] [US1] Add unfiltered `task list` contract tests for table columns, wrapping, ordering, and empty-state output in `tests/commands/list.test.ts`
-- [ ] T016 [P] [US1] Add pure table-formatting tests for full titles, dates, statuses, priorities, and no-color readability in `tests/unit/output.test.ts`
+- [ ] T016 [P] [US1] Add pure table-formatting tests for full titles, local `YYYY-MM-DD HH:mm` dates, statuses, priorities, and no-color readability in `tests/unit/output.test.ts`
 
 ### Implementation for User Story 1
 
 - [ ] T017 [US1] Implement create and unfiltered newest-first list queries in `src/db/tasks.ts`
-- [ ] T018 [P] [US1] Implement readable `cli-table3` rows, wrapping, creation-date formatting, and empty-state messages in `src/utils/output.ts`
+- [ ] T018 [P] [US1] Implement readable `cli-table3` rows, wrapping, local `YYYY-MM-DD HH:mm` creation-date formatting, and empty-state messages in `src/utils/output.ts`
 - [ ] T019 [US1] Implement the `add` command with title, description, priority, success output, and actionable errors in `src/commands/add.ts`
 - [ ] T020 [US1] Implement the unfiltered `list` command and table output in `src/commands/list.ts`
+- [ ] T021 [US1] Register `add` and `list` in `src/commands/index.ts` and implement the shebang, dependency composition, `parseAsync()`, top-level error boundary, exit codes, and guaranteed disconnect in `src/index.ts`
+- [ ] T022 [US1] Add a compiled subprocess smoke test for the add/list MVP, help, version, failure output without stacks, and temporary-home isolation in `tests/smoke/cli-mvp.test.ts`
 
 **Checkpoint**: User Story 1 passes its unit and command tests and provides the minimum useful
-task tracker independently of later stories.
+compiled `task` executable independently of later stories.
 
 ---
 
@@ -105,14 +107,14 @@ fail without changing stored status.
 
 ### Tests for User Story 2
 
-- [ ] T021 [P] [US2] Add exhaustive pure transition-matrix tests for allowed, prohibited, and same-state changes in `tests/unit/transitions.test.ts`
-- [ ] T022 [P] [US2] Add `task status` contract tests for success, invalid transitions, unknown IDs, stale writes, messages, and exit codes in `tests/commands/status.test.ts`
+- [ ] T023 [P] [US2] Add exhaustive pure transition-matrix tests for allowed, prohibited, and same-state changes in `tests/unit/transitions.test.ts`
+- [ ] T024 [P] [US2] Add `task status` contract tests for success, invalid transitions, unknown IDs, stale writes, messages, and exit codes in `tests/commands/status.test.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T023 [US2] Implement the pure status-transition matrix and corrective error details in `src/utils/transitions.ts`
-- [ ] T024 [US2] Extend `src/db/tasks.ts` with task lookup and status updates conditional on the previously validated status to reject stale writes
-- [ ] T025 [US2] Implement the `status` command with transition validation and previous/new status output in `src/commands/status.ts`
+- [ ] T025 [US2] Implement the pure status-transition matrix and corrective error details in `src/utils/transitions.ts`
+- [ ] T026 [US2] Extend `src/db/tasks.ts` with task lookup and status updates conditional on the previously validated status to reject stale writes
+- [ ] T027 [US2] Implement the `status` command with transition validation and previous/new status output in `src/commands/status.ts` and register it in `src/commands/index.ts`
 
 **Checkpoint**: User Story 2 passes its transition and command tests using seeded tasks without
 requiring update or delete behavior.
@@ -130,15 +132,15 @@ update paths.
 
 ### Tests for User Story 3
 
-- [ ] T026 [P] [US3] Add database tests for status/priority filters, combined filters, partial updates, retained fields, description clearing, and unknown IDs in `tests/unit/tasks-filter-update.test.ts`
-- [ ] T027 [P] [US3] Add filtered `task list` contract tests for valid filters, invalid values, ordering, and no-match output in `tests/commands/list-filters.test.ts`
-- [ ] T028 [P] [US3] Add `task update` contract tests for each field, combined fields, empty updates, validation errors, and exit codes in `tests/commands/update.test.ts`
+- [ ] T028 [P] [US3] Add database tests for status/priority filters, combined filters, partial updates, retained fields, description clearing, and unknown IDs in `tests/unit/tasks-filter-update.test.ts`
+- [ ] T029 [P] [US3] Add filtered `task list` contract tests for valid filters, invalid values, ordering, and no-match output in `tests/commands/list-filters.test.ts`
+- [ ] T030 [P] [US3] Add `task update` contract tests for each field, combined fields, empty updates, validation errors, and exit codes in `tests/commands/update.test.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T029 [US3] Extend `src/db/tasks.ts` with AND-combined list filters and partial update queries that preserve omitted values
-- [ ] T030 [US3] Extend `src/commands/list.ts` with validated `--status` and `--priority` options plus no-match output
-- [ ] T031 [US3] Implement the `update` command with at-least-one-field validation and explicit empty-description clearing in `src/commands/update.ts`
+- [ ] T031 [US3] Extend `src/db/tasks.ts` with AND-combined list filters and partial update queries that preserve omitted values
+- [ ] T032 [US3] Extend `src/commands/list.ts` with validated `--status` and `--priority` options plus no-match output
+- [ ] T033 [US3] Implement the `update` command with at-least-one-field validation and explicit empty-description clearing in `src/commands/update.ts` and register it in `src/commands/index.ts`
 
 **Checkpoint**: User Story 3 passes database and command tests and works with seeded tasks
 without requiring deletion behavior.
@@ -155,13 +157,13 @@ preserving data on decline, interruption, invalid IDs, or non-interactive misuse
 
 ### Tests for User Story 4
 
-- [ ] T032 [P] [US4] Add database tests for task deletion, unknown IDs, and no-write failure paths in `tests/unit/tasks-delete.test.ts`
-- [ ] T033 [P] [US4] Add `task delete` contract tests with injected confirmation for approve, decline, interruption, force bypass, non-TTY, and unknown-ID behavior in `tests/commands/delete.test.ts`
+- [ ] T034 [P] [US4] Add database tests for task deletion, unknown IDs, and no-write failure paths in `tests/unit/tasks-delete.test.ts`
+- [ ] T035 [P] [US4] Add `task delete` contract tests with injected confirmation for approve, decline, interruption, force bypass, non-TTY, and unknown-ID behavior in `tests/commands/delete.test.ts`
 
 ### Implementation for User Story 4
 
-- [ ] T034 [US4] Extend `src/db/tasks.ts` with fetch-for-confirmation and single-task deletion queries in `src/db/tasks.ts`
-- [ ] T035 [US4] Implement the `delete` command with Inquirer default-no confirmation, local cancellation handling, TTY checks, and force bypass in `src/commands/delete.ts`
+- [ ] T036 [US4] Extend `src/db/tasks.ts` with fetch-for-confirmation and single-task deletion queries in `src/db/tasks.ts`
+- [ ] T037 [US4] Implement the `delete` command with Inquirer default-no confirmation, local cancellation handling, TTY checks, and force bypass in `src/commands/delete.ts` and register it in `src/commands/index.ts`
 
 **Checkpoint**: User Story 4 passes deletion tests and cannot remove data without a confirmed or
 forced request.
@@ -170,16 +172,16 @@ forced request.
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-**Purpose**: Compose all independently tested commands into the shipped executable and validate
-the complete package against constitutional gates.
+**Purpose**: Validate the incrementally composed executable and complete package against
+constitutional and supported-platform gates.
 
-- [ ] T036 Register all five command modules in `src/commands/index.ts` and implement the shebang, dependency composition, `parseAsync()`, top-level error boundary, exit codes, and guaranteed disconnect in `src/index.ts`
-- [ ] T037 [P] Add compiled subprocess smoke coverage for help, version, full add/list/status/update/delete flow, failures without stacks, and temporary-home isolation in `tests/smoke/cli.test.ts`
-- [ ] T038 [P] Add the 10,000-task time-to-first-stdout and ordering smoke test in `tests/smoke/list-performance.test.ts`
-- [ ] T039 [P] Add packed-tarball and isolated global pnpm installation checks for the `task` bin, compiled Prisma client, config, schema, and migrations in `tests/smoke/package.test.ts`
-- [ ] T040 [P] Document installation, command examples, database location, status transitions, and error conventions in `README.md`
-- [ ] T041 Execute every scenario in `specs/001-manage-personal-tasks/quickstart.md` and correct any documentation discrepancy in `specs/001-manage-personal-tasks/quickstart.md`
-- [ ] T042 Run the `package.json` typecheck, test, build, pack, and global-install scripts and resolve all failures in `package.json`, `src/`, `tests/`, `prisma/`, and `pnpm-lock.yaml`
+- [ ] T038 [P] Add compiled subprocess smoke coverage for help, version, full add/list/status/update/delete flow, failures without stacks, and temporary-home isolation in `tests/smoke/cli.test.ts`
+- [ ] T039 [P] Add the 10,000-task time-to-first-stdout and ordering smoke test, enforcing the 2-second threshold on the reference CI job, in `tests/smoke/list-performance.test.ts`
+- [ ] T040 [P] Add packed-tarball and isolated global pnpm installation checks for the `task` bin, compiled Prisma client, config, schema, and migrations in `tests/smoke/package.test.ts`
+- [ ] T041 [P] Add Node.js 24 typecheck, test, build, and package jobs on `ubuntu-24.04` and `macos-15`, marking only Ubuntu as the authoritative 2-second performance environment, in `.github/workflows/ci.yml`
+- [ ] T042 [P] Document Linux/macOS support, installation, command examples, database location, date format, status transitions, and error conventions in `README.md`
+- [ ] T043 Execute every scenario in `specs/001-manage-personal-tasks/quickstart.md` and correct any documentation discrepancy in `specs/001-manage-personal-tasks/quickstart.md`
+- [ ] T044 Run the `package.json` typecheck, test, build, pack, and global-install scripts and resolve all failures in `package.json`, `src/`, `tests/`, `prisma/`, and `pnpm-lock.yaml`
 
 **Checkpoint**: The packed package installs globally with pnpm, `task` works from any directory,
 all tests pass, no expected failure leaks a stack, and all constitution gates remain satisfied.
@@ -193,24 +195,28 @@ all tests pass, no expected failure leaks a stack, and all constitution gates re
 - **Setup (Phase 1)**: No dependencies; T002, T003, and T004 may proceed in parallel after the
   intended package choices are known.
 - **Foundational (Phase 2)**: Depends on Setup and blocks every user story.
-- **User Stories (Phases 3-6)**: Depend on Foundational. They are functionally independently
-  testable, but edits to `src/db/tasks.ts` mean US1-US4 should normally be integrated in priority
-  order unless contributors coordinate that shared file.
+- **User Stories (Phases 3-6)**: Depend on Foundational. US2-US4 business behavior remains
+  independently testable, but registering those commands in the shipped executable depends on
+  T021. Edits to `src/db/tasks.ts` should normally be integrated in priority order unless
+  contributors coordinate that shared file.
 - **Polish (Phase 7)**: Depends on all selected user stories.
 
 ### User Story Dependency Graph
 
 ```text
 Setup -> Foundational -> US1 (P1) -> Polish
-                      -> US2 (P2) -> Polish
-                      -> US3 (P3) -> Polish
-                      -> US4 (P4) -> Polish
+                                -> US2 (P2) -> Polish
+                                -> US3 (P3) -> Polish
+                                -> US4 (P4) -> Polish
 ```
 
 - **US1**: No functional dependency on another story; establishes the MVP create/list workflow.
-- **US2**: Uses the shared Task schema and seeded records; does not require US1 command behavior.
-- **US3**: Uses the shared Task schema and seeded records; does not require US1 or US2 commands.
-- **US4**: Uses the shared Task schema and seeded records; does not require earlier command flows.
+- **US2**: Its behavior uses only the shared Task schema and seeded records; registration uses the
+  command registry created by T021.
+- **US3**: Its behavior does not require US2 command behavior; registration uses the command
+  registry created by T021.
+- **US4**: Its behavior does not require earlier lifecycle or update flows; registration uses the
+  command registry created by T021.
 
 ### Within Each User Story
 
@@ -226,10 +232,12 @@ Setup -> Foundational -> US1 (P1) -> Polish
   T007-T008 when shared signatures are agreed.
 - Tests marked [P] within each story use separate files and can be authored concurrently.
 - US1 output formatting T018 can proceed alongside database queries T017.
-- US2-US4 can be developed by separate contributors after Foundational, but changes to
-  `src/db/tasks.ts` must be serialized or coordinated.
-- Final smoke, performance, package, and README tasks T037-T040 use separate files and can run in
-  parallel after command composition T036.
+- US2-US4 business behavior can be developed by separate contributors after Foundational, but
+  their registration waits for T021 and changes to `src/db/tasks.ts` must be coordinated.
+- Command registration tasks T021, T027, T033, and T037 share `src/commands/index.ts` and should
+  follow story priority order unless contributors coordinate that file.
+- Final smoke, performance, package, CI, and README tasks T038-T042 use separate files and can run
+  in parallel after all selected stories are complete.
 
 ## Parallel Examples
 
@@ -245,23 +253,23 @@ T016 tests/unit/output.test.ts
 ### User Story 2
 
 ```text
-T021 tests/unit/transitions.test.ts
-T022 tests/commands/status.test.ts
+T023 tests/unit/transitions.test.ts
+T024 tests/commands/status.test.ts
 ```
 
 ### User Story 3
 
 ```text
-T026 tests/unit/tasks-filter-update.test.ts
-T027 tests/commands/list-filters.test.ts
-T028 tests/commands/update.test.ts
+T028 tests/unit/tasks-filter-update.test.ts
+T029 tests/commands/list-filters.test.ts
+T030 tests/commands/update.test.ts
 ```
 
 ### User Story 4
 
 ```text
-T032 tests/unit/tasks-delete.test.ts
-T033 tests/commands/delete.test.ts
+T034 tests/unit/tasks-delete.test.ts
+T035 tests/commands/delete.test.ts
 ```
 
 ## Implementation Strategy
@@ -270,7 +278,7 @@ T033 tests/commands/delete.test.ts
 
 1. Complete Setup and Foundational phases.
 2. Complete User Story 1 only.
-3. Run T013-T020 and demonstrate create/list against an isolated database.
+3. Run T013-T022 and demonstrate the compiled add/list executable against an isolated database.
 4. Stop and validate the MVP before adding lifecycle, update/filter, or deletion behavior.
 
 ### Incremental Delivery

@@ -15,6 +15,12 @@
 - Q: For lists of up to 10,000 tasks, must all output finish within 2 seconds or only begin
   displaying within 2 seconds? → A: The first rows MUST appear within 2 seconds; output may
   continue afterward.
+- Q: How should creation dates be displayed? → A: Use local time in the stable
+  `YYYY-MM-DD HH:mm` format.
+- Q: Which operating systems require initial support? → A: Guarantee Linux and macOS support;
+  Windows support is not guaranteed in the initial release.
+- Q: Which response-time targets remain in scope? → A: Keep only the time-to-first-row target
+  for lists and remove separate limits for the complete workflow and mutating commands.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -37,7 +43,7 @@ them and verify their identifiers, details, defaults, and ordering.
    valid priority, **Then** all supplied values are retained and the new task appears first in
    the default task list.
 3. **Given** multiple tasks, **When** the user lists tasks, **Then** each row shows ID, title,
-   status, priority, and creation date in newest-first order.
+   status, priority, and creation date in local `YYYY-MM-DD HH:mm` format and newest-first order.
 4. **Given** a create request with a missing or whitespace-only title, **When** the command is
    evaluated, **Then** no task is created and the user receives an actionable validation error.
 
@@ -175,7 +181,8 @@ the force option; verify data after each path.
 - **Interactive Flow**: Deletion without `--force` prompts for confirmation and defaults to no;
   all other required values are supplied through arguments or options.
 - **Success Output**: Mutating commands identify the affected task and resulting values. List
-  output is a readable table with ID, title, status, priority, and creation date columns.
+  output is a readable table with ID, title, status, priority, and creation date columns; creation
+  dates use local time in `YYYY-MM-DD HH:mm` format.
 - **Error Behavior**: Validation, not-found, and invalid-transition errors state the problem and
   the valid next action without diagnostic traces.
 - **Exit Codes**: Successful operations and user-cancelled deletion return 0; validation,
@@ -193,12 +200,13 @@ the force option; verify data after each path.
 
 ### Measurable Outcomes
 
-- **SC-001**: A user can create a task and find it in the task list in under 30 seconds.
+- **SC-001**: 100% of successfully created tasks appear in the immediately following unfiltered
+  task list.
 - **SC-002**: 100% of valid lifecycle transitions are retained, and 100% of prohibited
   transitions are rejected without changing task data.
 - **SC-003**: For collections of up to 10,000 tasks, the first rows of a filtered or unfiltered
-  list appear within 2 seconds of issuing the command on a typical personal computer; remaining
-  rows may continue rendering afterward.
+  list appear within 2 seconds of issuing the command on a GitHub-hosted `ubuntu-24.04` runner
+  using Node.js 24; remaining rows may continue rendering afterward.
 - **SC-004**: 100% of displayed task lists include the five required fields and preserve
   newest-first ordering.
 - **SC-005**: Users can invoke `task` from any working directory after installation without
@@ -212,7 +220,8 @@ the force option; verify data after each path.
 
 - The CLI serves one local user and all commands operate on that user's single task collection.
 - Status and priority filters combine using AND semantics.
-- Creation dates are displayed in a consistent, human-readable local date and time format.
+- Creation dates are displayed in local time using the stable `YYYY-MM-DD HH:mm` format.
+- The initial release guarantees Linux and macOS support. Windows behavior is not guaranteed.
 - There is no alternate sort option in this version; newest-first is always used.
 - Updates are partial, and fields omitted from an update retain their existing values.
 - Explicitly providing an empty description removes it; descriptions are otherwise optional.

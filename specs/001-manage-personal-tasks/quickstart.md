@@ -7,8 +7,7 @@ directory so validation cannot modify `~/.task-cli/tasks.db`.
 
 - A supported Node.js LTS release (`node --version`), preferably Node.js 24
 - pnpm 11 (`pnpm --version`)
-- A POSIX-compatible shell for the examples; use an equivalent temporary directory and `HOME`
-  override on Windows
+- Linux or macOS with a POSIX-compatible shell
 
 ## Install and Build
 
@@ -48,7 +47,8 @@ Expected:
 
 - IDs increase from 1.
 - New tasks start in `todo`; omitted priority is `medium`.
-- List output has ID, Title, Status, Priority, and Created columns in newest-first order.
+- List output has ID, Title, Status, Priority, and Created columns in newest-first order; Created
+  values use local time in `YYYY-MM-DD HH:mm` format.
 - Valid transitions and partial updates persist between invocations.
 - Status and priority filters return only matching rows.
 
@@ -98,10 +98,10 @@ until the first stdout data from a filtered list:
 pnpm vitest run tests/smoke/list-performance.test.ts
 ```
 
-Expected: the first rows appear within 2 seconds on a typical personal computer; remaining rows
-may continue rendering and maintain the contracted ordering. If migration checks dominate
-time-to-first-row, optimize the check described in [research.md](./research.md) without bypassing
-Prisma migration ownership.
+Expected locally: the rows begin rendering and maintain the contracted ordering. The authoritative
+2-second threshold runs on a GitHub-hosted `ubuntu-24.04` runner using Node.js 24; remaining rows
+may continue rendering. If migration checks dominate time-to-first-row, optimize the check
+described in [research.md](./research.md) without bypassing Prisma migration ownership.
 
 ## Cleanup
 

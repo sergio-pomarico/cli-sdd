@@ -2,8 +2,8 @@
 
 ## Runtime and TypeScript Build
 
-**Decision**: Target Node.js 24 LTS with an engine floor of `>=22.13`, use TypeScript ESM and
-`tsx` for development, and compile with `tsc` for distribution.
+**Decision**: Target Node.js 24 LTS with an engine floor of `>=22.13`, pin TypeScript 7.0.2, use
+TypeScript ESM and `tsx` for development, and compile with `tsc` for distribution.
 
 **Rationale**: Current Commander and Inquirer releases require a modern Node.js runtime. Native
 ESM plus `tsc` keeps production output inspectable and avoids a bundler that would complicate
@@ -16,6 +16,8 @@ source begins with `#!/usr/bin/env node`.
   depend on a development loader.
 - Adding tsup or esbuild: rejected until measured startup or distribution needs justify a
   bundler.
+- Using a floating TypeScript range: rejected because an exact compiler version makes local and
+  CI builds reproducible.
 
 ## Prisma and Local SQLite
 
@@ -37,6 +39,7 @@ makes behavior independent of `process.cwd()` and keeps production data outside 
 ## Schema Initialization and Upgrades
 
 **Decision**: Commit and publish Prisma migrations, keep the Prisma CLI as a runtime dependency,
+generate the initial migration with `prisma migrate dev --name init`, review and commit its SQL,
 and run packaged `prisma migrate deploy` with an explicit config and `DATABASE_URL` before
 constructing Prisma Client.
 
@@ -110,10 +113,14 @@ control. Avoiding a separate color package follows dependency restraint.
 **Decision**: Test pure validation and transition logic with Vitest, test commands with injected
 database/prompt/output dependencies, and run compiled subprocess smoke tests with a temporary
 `HOME`. Build in `prepack`, publish compiled output plus `prisma.config.ts`, Prisma schema, and
-migrations, and test a packed global installation by invoking `task --help`.
+migrations, and test a packed global installation by invoking `task --help`. Run the test and
+package checks on GitHub-hosted `ubuntu-24.04` and `macos-15` runners using Node.js 24; use the
+Ubuntu job as the authoritative environment for the 2-second time-to-first-row benchmark.
 
 **Rationale**: This separates fast business-rule tests from process and packaging verification,
 protects the real user database, and detects missing binary permissions or package assets.
+The two-platform matrix verifies the native compiler and SQLite adapter on every guaranteed
+initial platform without making variable local hardware part of the performance contract.
 
 **Alternatives considered**:
 

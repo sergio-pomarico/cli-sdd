@@ -32,9 +32,10 @@ task list [--status <todo|in-progress|done>] [--priority <high|medium|low>]
 - Filters are optional and combine with AND semantics.
 - Rows are ordered by creation date descending, then ID descending.
 - Table columns are `ID`, `Title`, `Status`, `Priority`, and `Created`.
+- `Created` values use local time in `YYYY-MM-DD HH:mm` format.
 - Long titles wrap rather than losing content.
-- With up to 10,000 tasks, the first rows appear within 2 seconds on a typical personal
-  computer; remaining rows may continue rendering.
+- With up to 10,000 tasks, the first rows appear within 2 seconds on a GitHub-hosted
+  `ubuntu-24.04` runner using Node.js 24; remaining rows may continue rendering.
 - No tasks produces `No tasks found.` and exit 0.
 - No filter matches produces `No tasks match the selected filters.` and exit 0.
 
