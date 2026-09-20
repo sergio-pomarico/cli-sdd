@@ -18,17 +18,17 @@
   the iteration process.
 -->
 
-**Language/Version**: TypeScript on a supported Node.js LTS release
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
 
-**Primary Dependencies**: Commander.js, Inquirer, Prisma ORM; justify any additions
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
 
-**Storage**: SQLite via Prisma at `~/.task-cli/tasks.db`, or N/A when unaffected
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
 
-**Testing**: Vitest unit tests for all business logic; CLI smoke checks where applicable
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
 
-**Target Platform**: Local CLI on Node.js LTS, globally installable with pnpm
+**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
 
-**Project Type**: Single CLI project
+**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]
 
 **Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
 
@@ -40,14 +40,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- **Toolchain**: Uses TypeScript, Node.js LTS, pnpm, and `tsx` or an equivalent runner.
-- **CLI contract**: Uses Commander.js and Inquirer appropriately; defines readable output,
-  tabular lists, actionable errors without stack traces, and exit codes 0/1.
-- **Persistence**: Uses Prisma with SQLite at `~/.task-cli/tasks.db` when data is stored.
-- **Structure**: Keeps a flat `commands/`, `db/`, `utils/` layout and prefers functional code.
-- **Tests**: Includes Vitest unit tests for every changed business rule.
-- **Dependencies**: Justifies each new dependency against a small in-project implementation.
-- **Distribution**: Preserves the executable entry point and `pnpm add -g` installation.
+[Gates determined based on constitution file]
 
 ## Project Structure
 
@@ -72,14 +65,39 @@ specs/[###-feature]/
 -->
 
 ```text
+# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
 src/
-├── commands/
-├── db/
-├── utils/
-└── index.ts
+├── models/
+├── services/
+├── cli/
+└── lib/
 
 tests/
+├── contract/
+├── integration/
 └── unit/
+
+# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+backend/
+├── src/
+│   ├── models/
+│   ├── services/
+│   └── api/
+└── tests/
+
+frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   └── services/
+└── tests/
+
+# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+api/
+└── [same as backend above]
+
+ios/ or android/
+└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
 **Structure Decision**: [Document the selected structure and reference the real
