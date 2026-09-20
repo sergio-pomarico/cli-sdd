@@ -98,6 +98,15 @@
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
+### CLI Behavior *(mandatory)*
+
+- **Command Syntax**: [Commander.js command, arguments, and options exposed by the feature]
+- **Interactive Flow**: [Inquirer prompts required, or N/A with rationale]
+- **Success Output**: [Human-readable output; specify table columns for list output]
+- **Error Behavior**: [Actionable errors and triggering conditions; no stack traces]
+- **Exit Codes**: [Expected code 0 success paths and code 1 failure paths]
+- **Persistence Impact**: [Prisma/SQLite reads or writes, migrations, or N/A]
+
 ### Key Entities *(include if feature involves data)*
 
 - **[Entity 1]**: [What it represents, key attributes without implementation]
@@ -116,6 +125,7 @@
 - **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
 - **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
 - **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+- **SC-005**: [CLI can be executed after global installation with `pnpm add -g`]
 
 ## Assumptions
 
