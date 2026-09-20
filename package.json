@@ -1,10 +1,27 @@
 {
   "name": "cli-sdd",
   "version": "1.0.0",
-  "description": "task cli app build with nodejs and typescript using SSD metodology",
-  "main": "index.js",
+  "description": "Personal task management CLI built with Node.js and TypeScript",
+  "type": "module",
+  "bin": {
+    "task": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "prisma/migrations",
+    "prisma/schema.prisma",
+    "prisma.config.ts"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm prisma:generate && tsc -p tsconfig.build.json",
+    "dev": "tsx src/index.ts",
+    "prisma:generate": "prisma generate",
+    "start": "node dist/index.js",
+    "test": "pnpm build && vitest run",
+    "test:unit": "vitest run tests/unit tests/commands",
+    "test:smoke": "pnpm build && vitest run tests/smoke",
+    "typecheck": "tsc -p tsconfig.json",
+    "prepack": "pnpm build"
   },
   "keywords": [
     "cli",
@@ -22,12 +39,22 @@
   "homepage": "https://github.com/sergio-pomarico/cli-sdd#readme",
   "author": "Sergio Pomárico <sergiodavid21@gmail.com>",
   "license": "MIT",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.1.1",
-      "onFail": "download"
-    }
+  "engines": {
+    "node": ">=22.13"
   },
-  "type": "module"
+  "packageManager": "pnpm@11.27.0",
+  "dependencies": {
+    "@inquirer/prompts": "8.7.2",
+    "@prisma/adapter-libsql": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "cli-table3": "0.6.5",
+    "commander": "15.0.0",
+    "prisma": "7.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.2",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.0.1"
+  }
 }

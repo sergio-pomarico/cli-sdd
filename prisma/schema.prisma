@@ -1,0 +1,21 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/db/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  status      String   @default("todo")
+  priority    String   @default("medium")
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt, id])
+  @@index([status, priority, createdAt, id])
+}

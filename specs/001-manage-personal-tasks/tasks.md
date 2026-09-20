@@ -35,10 +35,10 @@ an independently valuable increment after the shared foundation is complete.
 **Purpose**: Establish the TypeScript ESM package, required dependencies, build, test, and Prisma
 configuration without implementing user-story behavior.
 
-- [ ] T001 Configure Node `>=22.13`, exact TypeScript `7.0.2`, the `task` bin, package files, runtime/dev dependencies, pnpm scripts, and aligned Prisma versions in `package.json` and `pnpm-lock.yaml`
-- [ ] T002 [P] Configure strict NodeNext development and production compilation in `tsconfig.json` and `tsconfig.build.json`
-- [ ] T003 [P] Configure Vitest unit, command, and smoke test discovery in `vitest.config.ts`
-- [ ] T004 [P] Configure Prisma 7 ESM generation, SQLite datasource, migration paths, and generated output under `src/db/generated/prisma/` in `prisma.config.ts` and `prisma/schema.prisma`
+- [X] T001 Configure Node `>=22.13`, exact TypeScript `7.0.2`, the `task` bin, package files, runtime/dev dependencies, pnpm scripts, and aligned Prisma versions in `package.json` and `pnpm-lock.yaml`
+- [X] T002 [P] Configure strict NodeNext development and production compilation in `tsconfig.json` and `tsconfig.build.json`
+- [X] T003 [P] Configure Vitest unit, command, and smoke test discovery in `vitest.config.ts`
+- [X] T004 [P] Configure Prisma 7 ESM generation, SQLite datasource, migration paths, and generated output under `src/db/generated/prisma/` in `prisma.config.ts` and `prisma/schema.prisma`
 
 **Checkpoint**: Package installation, Prisma configuration, type checking, and empty test discovery
 can run without implementing commands.
@@ -52,14 +52,14 @@ user story.
 
 **CRITICAL**: No user story implementation begins until this phase is complete.
 
-- [ ] T005 Run `pnpm prisma migrate dev --name init`, then review and retain the generated Task table, defaults, and ordering/filter indexes in `prisma/migrations/`
-- [ ] T006 Generate and verify the publishable Prisma ESM client in `src/db/generated/prisma/`
-- [ ] T007 Implement home-directory resolution, recursive `~/.task-cli` creation, packaged `prisma migrate deploy`, and injectable test paths in `src/db/init.ts`
-- [ ] T008 Implement the `PrismaBetterSqlite3` client factory and deterministic disconnect lifecycle in `src/db/client.ts`
-- [ ] T009 [P] Define expected application errors and safe user-facing error mapping in `src/utils/errors.ts`
-- [ ] T010 [P] Define canonical status/priority constants plus strict ID, title, enum, and partial-update parsers in `src/utils/validation.ts`
-- [ ] T011 [P] Add Vitest coverage for valid and invalid shared parsers in `tests/unit/validation.test.ts`
-- [ ] T012 Add isolated temporary-home tests for directory creation, first-run migration, repeat migration, and disconnect behavior in `tests/unit/db-init.test.ts`
+- [X] T005 Run `pnpm prisma migrate dev --name init`, then review and retain the generated Task table, defaults, and ordering/filter indexes in `prisma/migrations/`
+- [X] T006 Generate and verify the publishable Prisma ESM client in `src/db/generated/prisma/`
+- [X] T007 Implement home-directory resolution, recursive `~/.task-cli` creation, packaged `prisma migrate deploy`, and injectable test paths in `src/db/init.ts`
+- [X] T008 Implement the `PrismaLibSql` client factory and deterministic disconnect lifecycle in `src/db/client.ts`
+- [X] T009 [P] Define expected application errors and safe user-facing error mapping in `src/utils/errors.ts`
+- [X] T010 [P] Define canonical status/priority constants plus strict ID, title, enum, and partial-update parsers in `src/utils/validation.ts`
+- [X] T011 [P] Add Vitest coverage for valid and invalid shared parsers in `tests/unit/validation.test.ts`
+- [X] T012 Add isolated temporary-home tests for directory creation, first-run migration, repeat migration, and disconnect behavior in `tests/unit/db-init.test.ts`
 
 **Checkpoint**: A temporary user home can initialize and reopen a migrated database; shared
 validation and error behavior pass Vitest without touching the real user database.
@@ -77,19 +77,19 @@ ordering. Invalid titles and priorities create no row.
 
 ### Tests for User Story 1
 
-- [ ] T013 [P] [US1] Add create/list database tests for defaults, monotonic IDs, optional descriptions, ordering ties, and invalid no-write behavior in `tests/unit/tasks-create-list.test.ts`
-- [ ] T014 [P] [US1] Add `task add` contract tests for successful and invalid inputs, stdout/stderr, and exit codes in `tests/commands/add.test.ts`
-- [ ] T015 [P] [US1] Add unfiltered `task list` contract tests for table columns, wrapping, ordering, and empty-state output in `tests/commands/list.test.ts`
-- [ ] T016 [P] [US1] Add pure table-formatting tests for full titles, local `YYYY-MM-DD HH:mm` dates, statuses, priorities, and no-color readability in `tests/unit/output.test.ts`
+- [X] T013 [P] [US1] Add create/list database tests for defaults, monotonic IDs, optional descriptions, ordering ties, and invalid no-write behavior in `tests/unit/tasks-create-list.test.ts`
+- [X] T014 [P] [US1] Add `task add` contract tests for successful and invalid inputs, stdout/stderr, and exit codes in `tests/commands/add.test.ts`
+- [X] T015 [P] [US1] Add unfiltered `task list` contract tests for table columns, wrapping, ordering, and empty-state output in `tests/commands/list.test.ts`
+- [X] T016 [P] [US1] Add pure table-formatting tests for full titles, local `YYYY-MM-DD HH:mm` dates, statuses, priorities, and no-color readability in `tests/unit/output.test.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Implement create and unfiltered newest-first list queries in `src/db/tasks.ts`
-- [ ] T018 [P] [US1] Implement readable `cli-table3` rows, wrapping, local `YYYY-MM-DD HH:mm` creation-date formatting, and empty-state messages in `src/utils/output.ts`
-- [ ] T019 [US1] Implement the `add` command with title, description, priority, success output, and actionable errors in `src/commands/add.ts`
-- [ ] T020 [US1] Implement the unfiltered `list` command and table output in `src/commands/list.ts`
-- [ ] T021 [US1] Register `add` and `list` in `src/commands/index.ts` and implement the shebang, dependency composition, `parseAsync()`, top-level error boundary, exit codes, and guaranteed disconnect in `src/index.ts`
-- [ ] T022 [US1] Add a compiled subprocess smoke test for the add/list MVP, help, version, failure output without stacks, and temporary-home isolation in `tests/smoke/cli-mvp.test.ts`
+- [X] T017 [US1] Implement create and unfiltered newest-first list queries in `src/db/tasks.ts`
+- [X] T018 [P] [US1] Implement readable `cli-table3` rows, wrapping, local `YYYY-MM-DD HH:mm` creation-date formatting, and empty-state messages in `src/utils/output.ts`
+- [X] T019 [US1] Implement the `add` command with title, description, priority, success output, and actionable errors in `src/commands/add.ts`
+- [X] T020 [US1] Implement the unfiltered `list` command and table output in `src/commands/list.ts`
+- [X] T021 [US1] Register `add` and `list` in `src/commands/index.ts` and implement the shebang, dependency composition, `parseAsync()`, top-level error boundary, exit codes, and guaranteed disconnect in `src/index.ts`
+- [X] T022 [US1] Add a compiled subprocess smoke test for the add/list MVP, help, version, failure output without stacks, and temporary-home isolation in `tests/smoke/cli-mvp.test.ts`
 
 **Checkpoint**: User Story 1 passes its unit and command tests and provides the minimum useful
 compiled `task` executable independently of later stories.

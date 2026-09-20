@@ -205,8 +205,8 @@ the force option; verify data after each path.
 - **SC-002**: 100% of valid lifecycle transitions are retained, and 100% of prohibited
   transitions are rejected without changing task data.
 - **SC-003**: For collections of up to 10,000 tasks, the first rows of a filtered or unfiltered
-  list appear within 2 seconds of issuing the command on a GitHub-hosted `ubuntu-24.04` runner
-  using Node.js 24; remaining rows may continue rendering afterward.
+  list appear within 2 seconds of issuing the command on the documented Linux reference
+  environment; remaining rows may continue rendering afterward.
 - **SC-004**: 100% of displayed task lists include the five required fields and preserve
   newest-first ordering.
 - **SC-005**: Users can invoke `task` from any working directory after installation without

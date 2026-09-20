@@ -21,9 +21,9 @@ source begins with `#!/usr/bin/env node`.
 
 ## Prisma and Local SQLite
 
-**Decision**: Use aligned Prisma ORM 7 packages with `@prisma/adapter-better-sqlite3`. Generate
-the ESM client into `src/db/generated/prisma`, derive the runtime URL from the user's home
-directory, and create `~/.task-cli` recursively before connecting.
+**Decision**: Use aligned Prisma ORM 7 packages with `@prisma/adapter-libsql`. Generate the ESM
+client into `src/db/generated/prisma`, derive the runtime URL from the user's home directory, and
+create `~/.task-cli` recursively before connecting.
 
 **Rationale**: Prisma 7 requires a driver adapter, and an explicit generated-client path works
 with ESM compilation and package publication. Resolving the database from the home directory
@@ -31,6 +31,9 @@ makes behavior independent of `process.cwd()` and keeps production data outside 
 
 **Alternatives considered**:
 
+- `@prisma/adapter-better-sqlite3`: rejected because its transitive native install script is
+  blocked by default during clean pnpm global installs and a published dependency cannot approve
+  that script on the user's behalf.
 - Repository-relative SQLite: rejected because commands may run from any directory and the
   constitution fixes the user-home path.
 - Remote SQLite or libSQL: rejected because synchronization and external services are out of

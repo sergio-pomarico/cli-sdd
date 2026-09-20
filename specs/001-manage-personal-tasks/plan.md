@@ -18,7 +18,7 @@ and output functions in `src/utils/`.
 `>=22.13` for current Commander and Inquirer compatibility
 
 **Primary Dependencies**: Commander.js 15, `@inquirer/prompts` 8, Prisma ORM 7 with the Prisma
-CLI retained at runtime, `@prisma/adapter-better-sqlite3`, `better-sqlite3`, and `cli-table3`;
+CLI retained at runtime, `@prisma/adapter-libsql`, and `cli-table3`;
 Prisma package versions MUST be pinned together
 
 **Storage**: SQLite via Prisma at `~/.task-cli/tasks.db`; committed Prisma migrations are

@@ -1,0 +1,16 @@
+node_modules/
+src/
+tests/
+specs/
+.specify/
+prompts/
+.github/
+coverage/
+build/
+*.log
+.env*
+*.tsbuildinfo
+tsconfig*.json
+vitest.config.ts
+AGENTS.md
+prisma/*.db*
