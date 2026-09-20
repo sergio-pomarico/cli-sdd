@@ -8,6 +8,14 @@
 
 **Input**: User description: "Build cli-sdd to create, list, progress, update, and delete personal tasks from the terminal."
 
+## Clarifications
+
+### Session 2026-09-20
+
+- Q: For lists of up to 10,000 tasks, must all output finish within 2 seconds or only begin
+  displaying within 2 seconds? → A: The first rows MUST appear within 2 seconds; output may
+  continue afterward.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Capture and Review Tasks (Priority: P1)
@@ -159,11 +167,11 @@ the force option; verify data after each path.
 ### CLI Behavior *(mandatory)*
 
 - **Command Syntax**:
-  - `cli-sdd add <title> [--priority high|medium|low] [--description <text>]`
-  - `cli-sdd list [--status todo|in-progress|done] [--priority high|medium|low]`
-  - `cli-sdd status <id> <todo|in-progress|done>`
-  - `cli-sdd update <id> [--title <text>] [--description <text>] [--priority high|medium|low]`
-  - `cli-sdd delete <id> [--force]`
+  - `task add <title> [--priority high|medium|low] [--description <text>]`
+  - `task list [--status todo|in-progress|done] [--priority high|medium|low]`
+  - `task status <id> <todo|in-progress|done>`
+  - `task update <id> [--title <text>] [--description <text>] [--priority high|medium|low]`
+  - `task delete <id> [--force]`
 - **Interactive Flow**: Deletion without `--force` prompts for confirmation and defaults to no;
   all other required values are supplied through arguments or options.
 - **Success Output**: Mutating commands identify the affected task and resulting values. List
@@ -188,11 +196,12 @@ the force option; verify data after each path.
 - **SC-001**: A user can create a task and find it in the task list in under 30 seconds.
 - **SC-002**: 100% of valid lifecycle transitions are retained, and 100% of prohibited
   transitions are rejected without changing task data.
-- **SC-003**: For collections of up to 10,000 tasks, users see a filtered or unfiltered list
-  within 2 seconds of issuing the command on a typical personal computer.
+- **SC-003**: For collections of up to 10,000 tasks, the first rows of a filtered or unfiltered
+  list appear within 2 seconds of issuing the command on a typical personal computer; remaining
+  rows may continue rendering afterward.
 - **SC-004**: 100% of displayed task lists include the five required fields and preserve
   newest-first ordering.
-- **SC-005**: Users can invoke `cli-sdd` from any working directory after installation without
+- **SC-005**: Users can invoke `task` from any working directory after installation without
   project-specific setup.
 - **SC-006**: Every invalid command covered by the requirements identifies the error and a valid
   corrective action without exposing internal diagnostic details.
