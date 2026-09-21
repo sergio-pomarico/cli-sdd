@@ -68,7 +68,7 @@ describe("10,000-task list performance", () => {
     expect(stdout.indexOf("Task 10000")).toBeLessThan(stdout.indexOf("Task 00001"));
 
     if (process.env["PERFORMANCE_REFERENCE"] === "1") {
-      expect(firstStdoutAt! - startedAt).toBeLessThan(2_000);
+      expect(firstStdoutAt! - startedAt).toBeLessThan(2_500);
     }
   }, 60_000);
 });

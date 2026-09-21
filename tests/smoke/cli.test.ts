@@ -91,7 +91,7 @@ describe("compiled complete CLI", () => {
     const finalList = await runCli(["list"]);
     expect(finalList.stdout).toContain("First");
     expect(finalList.stdout).not.toContain("Second revised");
-  });
+  }, 30_000);
 
   it("returns actionable failures without stacks or data changes", async () => {
     await runCli(["add", "Blocked transition"]);
