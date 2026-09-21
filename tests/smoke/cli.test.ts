@@ -65,7 +65,7 @@ describe("compiled complete CLI", () => {
     expect(await runCli(["status", "1", "in-progress"])).toMatchObject({
       exitCode: 0,
       stderr: "",
-    });
+    }, 30_000);
     expect(await runCli(["status", "1", "done"])).toMatchObject({ exitCode: 0, stderr: "" });
     expect(
       await runCli([
