@@ -33,9 +33,8 @@ export async function initializeDatabase(
   const databaseUrl = pathToFileURL(databasePath).href;
   const packageRoot = options.packageRoot ?? defaultPackageRoot();
 
-  await mkdir(dataDirectory, { recursive: true });
-
   try {
+    await mkdir(dataDirectory, { recursive: true });
     const prismaCli = require.resolve("prisma/build/index.js");
     await execFileAsync(
       process.execPath,

@@ -1,19 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { executeProgram, type ProgramDependencies } from "../../src/commands/index.js";
+import { createTestDependencies } from "./helpers.js";
 
 function dependencies(tasks: Awaited<ReturnType<ProgramDependencies["listTasks"]>>) {
-  const stdout: string[] = [];
-  const stderr: string[] = [];
-
-  return {
-    stdout,
-    stderr,
-    createTask: vi.fn(),
+  const result = createTestDependencies({
     listTasks: vi.fn(async () => tasks),
-    writeOut: (message: string) => stdout.push(message),
-    writeErr: (message: string) => stderr.push(message),
-  } satisfies ProgramDependencies & { stdout: string[]; stderr: string[] };
+  });
+
+  return { ...result.deps, stdout: result.stdout, stderr: result.stderr };
 }
 
 describe("task list", () => {

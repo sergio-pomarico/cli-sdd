@@ -107,14 +107,14 @@ fail without changing stored status.
 
 ### Tests for User Story 2
 
-- [ ] T023 [P] [US2] Add exhaustive pure transition-matrix tests for allowed, prohibited, and same-state changes in `tests/unit/transitions.test.ts`
-- [ ] T024 [P] [US2] Add `task status` contract tests for success, invalid transitions, unknown IDs, stale writes, messages, and exit codes in `tests/commands/status.test.ts`
+- [X] T023 [P] [US2] Add exhaustive pure transition-matrix tests for allowed, prohibited, and same-state changes in `tests/unit/transitions.test.ts`
+- [X] T024 [P] [US2] Add `task status` contract tests for success, invalid transitions, unknown IDs, stale writes, messages, and exit codes in `tests/commands/status.test.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T025 [US2] Implement the pure status-transition matrix and corrective error details in `src/utils/transitions.ts`
-- [ ] T026 [US2] Extend `src/db/tasks.ts` with task lookup and status updates conditional on the previously validated status to reject stale writes
-- [ ] T027 [US2] Implement the `status` command with transition validation and previous/new status output in `src/commands/status.ts` and register it in `src/commands/index.ts`
+- [X] T025 [US2] Implement the pure status-transition matrix and corrective error details in `src/utils/transitions.ts`
+- [X] T026 [US2] Extend `src/db/tasks.ts` with task lookup and status updates conditional on the previously validated status to reject stale writes
+- [X] T027 [US2] Implement the `status` command with transition validation and previous/new status output in `src/commands/status.ts` and register it in `src/commands/index.ts`
 
 **Checkpoint**: User Story 2 passes its transition and command tests using seeded tasks without
 requiring update or delete behavior.
@@ -132,15 +132,15 @@ update paths.
 
 ### Tests for User Story 3
 
-- [ ] T028 [P] [US3] Add database tests for status/priority filters, combined filters, partial updates, retained fields, description clearing, and unknown IDs in `tests/unit/tasks-filter-update.test.ts`
-- [ ] T029 [P] [US3] Add filtered `task list` contract tests for valid filters, invalid values, ordering, and no-match output in `tests/commands/list-filters.test.ts`
-- [ ] T030 [P] [US3] Add `task update` contract tests for each field, combined fields, empty updates, validation errors, and exit codes in `tests/commands/update.test.ts`
+- [X] T028 [P] [US3] Add database tests for status/priority filters, combined filters, partial updates, retained fields, description clearing, and unknown IDs in `tests/unit/tasks-filter-update.test.ts`
+- [X] T029 [P] [US3] Add filtered `task list` contract tests for valid filters, invalid values, ordering, and no-match output in `tests/commands/list-filters.test.ts`
+- [X] T030 [P] [US3] Add `task update` contract tests for each field, combined fields, empty updates, validation errors, and exit codes in `tests/commands/update.test.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T031 [US3] Extend `src/db/tasks.ts` with AND-combined list filters and partial update queries that preserve omitted values
-- [ ] T032 [US3] Extend `src/commands/list.ts` with validated `--status` and `--priority` options plus no-match output
-- [ ] T033 [US3] Implement the `update` command with at-least-one-field validation and explicit empty-description clearing in `src/commands/update.ts` and register it in `src/commands/index.ts`
+- [X] T031 [US3] Extend `src/db/tasks.ts` with AND-combined list filters and partial update queries that preserve omitted values
+- [X] T032 [US3] Extend `src/commands/list.ts` with validated `--status` and `--priority` options plus no-match output
+- [X] T033 [US3] Implement the `update` command with at-least-one-field validation and explicit empty-description clearing in `src/commands/update.ts` and register it in `src/commands/index.ts`
 
 **Checkpoint**: User Story 3 passes database and command tests and works with seeded tasks
 without requiring deletion behavior.
@@ -157,13 +157,13 @@ preserving data on decline, interruption, invalid IDs, or non-interactive misuse
 
 ### Tests for User Story 4
 
-- [ ] T034 [P] [US4] Add database tests for task deletion, unknown IDs, and no-write failure paths in `tests/unit/tasks-delete.test.ts`
-- [ ] T035 [P] [US4] Add `task delete` contract tests with injected confirmation for approve, decline, interruption, force bypass, non-TTY, and unknown-ID behavior in `tests/commands/delete.test.ts`
+- [X] T034 [P] [US4] Add database tests for task deletion, unknown IDs, and no-write failure paths in `tests/unit/tasks-delete.test.ts`
+- [X] T035 [P] [US4] Add `task delete` contract tests with injected confirmation for approve, decline, interruption, force bypass, non-TTY, and unknown-ID behavior in `tests/commands/delete.test.ts`
 
 ### Implementation for User Story 4
 
-- [ ] T036 [US4] Extend `src/db/tasks.ts` with fetch-for-confirmation and single-task deletion queries in `src/db/tasks.ts`
-- [ ] T037 [US4] Implement the `delete` command with Inquirer default-no confirmation, local cancellation handling, TTY checks, and force bypass in `src/commands/delete.ts` and register it in `src/commands/index.ts`
+- [X] T036 [US4] Extend `src/db/tasks.ts` with fetch-for-confirmation and single-task deletion queries in `src/db/tasks.ts`
+- [X] T037 [US4] Implement the `delete` command with Inquirer default-no confirmation, local cancellation handling, TTY checks, and force bypass in `src/commands/delete.ts` and register it in `src/commands/index.ts`
 
 **Checkpoint**: User Story 4 passes deletion tests and cannot remove data without a confirmed or
 forced request.
@@ -175,13 +175,13 @@ forced request.
 **Purpose**: Validate the incrementally composed executable and complete package against
 constitutional and supported-platform gates.
 
-- [ ] T038 [P] Add compiled subprocess smoke coverage for help, version, full add/list/status/update/delete flow, failures without stacks, and temporary-home isolation in `tests/smoke/cli.test.ts`
-- [ ] T039 [P] Add the 10,000-task time-to-first-stdout and ordering smoke test, enforcing the 2-second threshold on the reference CI job, in `tests/smoke/list-performance.test.ts`
-- [ ] T040 [P] Add packed-tarball and isolated global pnpm installation checks for the `task` bin, compiled Prisma client, config, schema, and migrations in `tests/smoke/package.test.ts`
-- [ ] T041 [P] Add Node.js 24 typecheck, test, build, and package jobs on `ubuntu-24.04` and `macos-15`, marking only Ubuntu as the authoritative 2-second performance environment, in `.github/workflows/ci.yml`
-- [ ] T042 [P] Document Linux/macOS support, installation, command examples, database location, date format, status transitions, and error conventions in `README.md`
-- [ ] T043 Execute every scenario in `specs/001-manage-personal-tasks/quickstart.md` and correct any documentation discrepancy in `specs/001-manage-personal-tasks/quickstart.md`
-- [ ] T044 Run the `package.json` typecheck, test, build, pack, and global-install scripts and resolve all failures in `package.json`, `src/`, `tests/`, `prisma/`, and `pnpm-lock.yaml`
+- [X] T038 [P] Add compiled subprocess smoke coverage for help, version, full add/list/status/update/delete flow, failures without stacks, and temporary-home isolation in `tests/smoke/cli.test.ts`
+- [X] T039 [P] Add the 10,000-task time-to-first-stdout and ordering smoke test, enforcing the 2-second threshold on the reference CI job, in `tests/smoke/list-performance.test.ts`
+- [X] T040 [P] Add packed-tarball and isolated global pnpm installation checks for the `task` bin, compiled Prisma client, config, schema, and migrations in `tests/smoke/package.test.ts`
+- [X] T041 [P] Add Node.js 24 typecheck, test, build, and package jobs on `ubuntu-24.04` and `macos-15`, marking only Ubuntu as the authoritative 2-second performance environment, in `.github/workflows/ci.yml`
+- [X] T042 [P] Document Linux/macOS support, installation, command examples, database location, date format, status transitions, and error conventions in `README.md`
+- [X] T043 Execute every scenario in `specs/001-manage-personal-tasks/quickstart.md` and correct any documentation discrepancy in `specs/001-manage-personal-tasks/quickstart.md`
+- [X] T044 Run the `package.json` typecheck, test, build, pack, and global-install scripts and resolve all failures in `package.json`, `src/`, `tests/`, `prisma/`, and `pnpm-lock.yaml`
 
 **Checkpoint**: The packed package installs globally with pnpm, `task` works from any directory,
 all tests pass, no expected failure leaks a stack, and all constitution gates remain satisfied.

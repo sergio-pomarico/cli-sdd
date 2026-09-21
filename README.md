@@ -3,18 +3,16 @@
 CLI para gestionar tareas personales desde la terminal. Guarda los datos localmente en SQLite y
 expone el ejecutable global `task`.
 
-## Estado actual
-
-El MVP incluye la creación y el listado de tareas:
+## Funcionalidades
 
 - Crear tareas con título, descripción opcional y prioridad.
 - Aplicar automáticamente el estado `todo` y la prioridad `medium`.
-- Listar las tareas de más reciente a más antigua.
+- Listar y filtrar tareas por estado y prioridad.
+- Avanzar o reabrir tareas mediante transiciones de estado controladas.
+- Actualizar título, descripción y prioridad.
+- Eliminar tareas con confirmación o mediante `--force`.
 - Persistir los datos entre ejecuciones y directorios de trabajo.
 - Inicializar y actualizar automáticamente la base de datos local.
-
-Los comandos de cambio de estado, actualización, eliminación y los filtros de listado están
-planificados, pero todavía no están disponibles en el MVP.
 
 ## Requisitos
 
@@ -50,7 +48,10 @@ task --help
 | Comando | Descripción |
 |---|---|
 | `task add <title>` | Crea una tarea. |
-| `task list` | Lista todas las tareas en orden descendente de creación. |
+| `task list [options]` | Lista y filtra tareas en orden descendente de creación. |
+| `task status <id> <status>` | Cambia el estado de una tarea. |
+| `task update <id> [options]` | Actualiza los campos editables de una tarea. |
+| `task delete <id> [--force]` | Elimina una tarea de forma segura. |
 | `task --help` | Muestra la ayuda general. |
 | `task <command> --help` | Muestra la ayuda de un comando. |
 | `task --version` | Muestra la versión instalada. |
@@ -104,7 +105,7 @@ task add "Publicar el MVP" \
 ### Sintaxis
 
 ```text
-task list
+task list [--status <todo|in-progress|done>] [--priority <high|medium|low>]
 ```
 
 Las tareas aparecen de más reciente a más antigua. Si dos tareas tienen la misma fecha, se muestra
@@ -136,29 +137,104 @@ Cuando no existen tareas:
 No tasks found.
 ```
 
-## Comandos planificados
-
-Los siguientes comandos forman parte del contrato del CLI, pero aún no están implementados:
-
-| Comando planificado | Descripción |
-|---|---|
-| `task list --status <status>` | Filtra por estado. |
-| `task list --priority <priority>` | Filtra por prioridad. |
-| `task status <id> <status>` | Cambia el estado de una tarea. |
-| `task update <id> [options]` | Modifica título, descripción o prioridad. |
-| `task delete <id> [--force]` | Elimina una tarea con confirmación. |
-
-Ejemplos previstos para versiones posteriores:
+Filtrar tareas por estado y prioridad:
 
 ```bash
+task list --status todo
+task list --priority high
 task list --status todo --priority high
+```
+
+Los dos filtros se combinan con lógica AND. Si no existe ninguna coincidencia, el comando muestra:
+
+```text
+No tasks match the selected filters.
+```
+
+## Cambiar el estado
+
+### Sintaxis
+
+```text
+task status <id> <todo|in-progress|done>
+```
+
+Transiciones permitidas:
+
+| Estado actual | Estado nuevo |
+|---|---|
+| `todo` | `in-progress` |
+| `in-progress` | `done` |
+| `in-progress` | `todo` |
+| `done` | `todo` |
+
+Una tarea no puede cambiar directamente de `todo` a `done` ni volver a seleccionar su estado
+actual.
+
+### Ejemplos
+
+```bash
 task status 1 in-progress
 task status 1 done
+task status 1 todo
+```
+
+## Actualizar tareas
+
+### Sintaxis
+
+```text
+task update <id> [--title <text>] [--description <text>] [--priority <high|medium|low>]
+```
+
+Debe proporcionarse al menos una opción. Los campos omitidos conservan su valor anterior.
+
+### Ejemplos
+
+Cambiar el título y la prioridad:
+
+```bash
 task update 2 --title "Publicar versión estable" --priority medium
+```
+
+Cambiar solo la descripción:
+
+```bash
+task update 2 --description "Revisar el changelog antes de publicar"
+```
+
+Eliminar una descripción existente:
+
+```bash
 task update 2 --description ""
+```
+
+## Eliminar tareas
+
+### Sintaxis
+
+```text
+task delete <id> [--force]
+```
+
+Sin `--force`, el CLI muestra la identidad de la tarea y solicita confirmación, cuyo valor por
+defecto es no. Rechazar o interrumpir la confirmación conserva la tarea y termina con código `0`.
+
+### Ejemplos
+
+Eliminar con confirmación interactiva:
+
+```bash
 task delete 2
+```
+
+Eliminar sin solicitar confirmación:
+
+```bash
 task delete 2 --force
 ```
+
+En una terminal no interactiva debe utilizarse `--force`.
 
 ## Persistencia
 

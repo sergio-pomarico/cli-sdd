@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -35,4 +35,15 @@ describe("initializeDatabase", () => {
     await expect(secondClient.task.count()).resolves.toBe(0);
     await secondClient.$disconnect();
   }, 30_000);
+
+  it("maps data-directory creation failures to an actionable storage error", async () => {
+    const temporaryRoot = await mkdtemp(join(tmpdir(), "cli-sdd-invalid-home-"));
+    temporaryHomes.push(temporaryRoot);
+    const invalidHome = join(temporaryRoot, "home-file");
+    await writeFile(invalidHome, "not a directory");
+
+    await expect(initializeDatabase({ homeDir: invalidHome })).rejects.toThrow(
+      /database initialization failed.*writable/i,
+    );
+  });
 });

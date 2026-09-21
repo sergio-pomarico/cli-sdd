@@ -1,29 +1,20 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { executeProgram, type ProgramDependencies } from "../../src/commands/index.js";
+import { executeProgram } from "../../src/commands/index.js";
+import { createTestDependencies, sampleTask } from "./helpers.js";
 
-function dependencies(): ProgramDependencies & {
-  stdout: string[];
-  stderr: string[];
-} {
-  const stdout: string[] = [];
-  const stderr: string[] = [];
-
-  return {
-    stdout,
-    stderr,
+function dependencies() {
+  const result = createTestDependencies({
     createTask: vi.fn(async (input) => ({
+      ...sampleTask,
       id: 7,
       title: input.title,
       description: input.description ?? null,
-      status: "todo",
       priority: input.priority ?? "medium",
-      createdAt: new Date("2026-09-20T12:00:00.000Z"),
     })),
-    listTasks: vi.fn(async () => []),
-    writeOut: (message) => stdout.push(message),
-    writeErr: (message) => stderr.push(message),
-  };
+  });
+
+  return { ...result.deps, stdout: result.stdout, stderr: result.stderr };
 }
 
 describe("task add", () => {
